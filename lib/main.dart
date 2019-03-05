@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
               'You have pushed the button this many times:',
@@ -98,20 +98,60 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.display1,
             ),
-
+            //flutter---跳转
             FlatButton(
-              child: Text("open new route"),
+              child: Text("1--flutter__跳转"),
               textColor: Colors.blue,
               onPressed: () {
                 //导航到新路由
-                Navigator.push( context,
+                Navigator.push(context,
                     new MaterialPageRoute(builder: (context) {
-                      return new NewRoute();
-                    }));
-                debugDumpApp();
+                  return new NewRoute();
+                }));
+                // debugDumpApp();
               },
             ),
 
+            //flutter__字体
+            FlatButton(
+              child: Text("2--flutter__文本&字体样式"),
+              textColor: Colors.blue,
+              onPressed: () {
+                //导航到新路由
+                Navigator.push(context,
+                    new MaterialPageRoute(builder: (context) {
+                  return new TextRoute();
+                }));
+                // debugDumpApp();
+              },
+            ),
+
+            //flutter__按钮
+            FlatButton(
+              child: Text("3--flutter__按钮"),
+              textColor: Colors.blue,
+              onPressed: () {
+                //导航到新路由
+                Navigator.push(context,
+                    new MaterialPageRoute(builder: (context) {
+                  return new ButtonRoute();
+                }));
+                // debugDumpApp();
+              },
+            ),
+            //flutter__图片
+            FlatButton(
+              child: Text("4--flutter__图片"),
+              textColor: Colors.blue,
+              onPressed: () {
+                //导航到新路由
+                Navigator.push(context,
+                    new MaterialPageRoute(builder: (context) {
+                  return new ImageRoute();
+                }));
+                // debugDumpApp();
+              },
+            ),
           ],
         ),
       ),
@@ -129,12 +169,160 @@ class NewRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("New route"),
+        title: Text("跳转"),
       ),
       body: Center(
-        child: Text("This is new route"),
+        child: Text("Hello world"),
       ),
     );
   }
 }
 
+class TextRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("文本&字体样式"),
+      ),
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            Text(
+              "Hello world",
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              "Hello world! I'm yang. " * 4,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              "Hello world! I'm yang. " * 8,
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              "Hello world",
+              style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 18.0,
+                  height: 1.2,
+                  fontFamily: "Courier",
+                  background: new Paint()..color = Colors.yellow,
+                  decoration: TextDecoration.underline,
+                  decorationStyle: TextDecorationStyle.dashed),
+            ),
+            Text.rich(TextSpan(children: [
+              TextSpan(text: "BAIDU : "),
+              TextSpan(
+                  text: "https:www.baidu.com",
+                  style: TextStyle(color: Colors.blue))
+            ])),
+
+            Text(
+              "Hello world",
+              textScaleFactor: 1.5,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ButtonRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("按钮"),
+      ),
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            RaisedButton(
+              child: Text("漂浮按钮"),
+              onPressed: () => {},
+            ),
+            FlatButton(
+              child: Text("扁平按钮"),
+              onPressed: () => {},
+            ),
+            OutlineButton(
+              child: Text("显框按钮"),
+              onPressed: () => {},
+            ),
+            IconButton(
+              icon: Icon(Icons.thumb_up),
+              onPressed: () => {},
+            ),
+            FlatButton(
+              color: Colors.blue,
+              highlightColor: Colors.blue[700],
+              colorBrightness: Brightness.dark,
+              splashColor: Colors.grey,
+              child: Text("自定义按钮"),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              onPressed: () => {},
+            ),
+            RaisedButton(
+              color: Colors.blue,
+              highlightColor: Colors.blue[700],
+              colorBrightness: Brightness.dark,
+              splashColor: Colors.grey,
+              child: Text("自定义按钮"),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              onPressed: () => {},
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ImageRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("图片"),
+      ),
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            Image(image: AssetImage("images/avatar.png"), width: 100.0),
+            Image.asset(
+              "images/avatar.png",
+              width: 100.0,
+            ),
+            Text(
+              "----上图为本地 , 下图是网络----",
+              textAlign: TextAlign.center,
+            ),
+            Image(
+              image: NetworkImage(
+                  "https://admin.luezhi.com/resource/images/login/logo-luezhi.png"),
+              width: 100.0,
+            ),
+            Image.network(
+              "https://admin.luezhi.com/resource/images/login/logo-luezhi.png",
+              width: 100.0,
+            ),
+
+
+      Text("\uE914 \uE000 \uE90D",
+      style: TextStyle(
+          fontFamily: "MaterialIcons",
+          fontSize: 50.0,
+          color: Colors.green
+      ),
+    )
+          ],
+        ),
+      ),
+    );
+  }
+}
