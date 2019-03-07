@@ -20,6 +20,9 @@ class MyApp extends StatelessWidget {
           child: new RandomWords(),
         ),
       ),*/
+      theme: new ThemeData(
+        primaryColor: Colors.white,
+      ),
       home:new RandomWords(),
     );
   }
@@ -121,7 +124,7 @@ class RadomWordsState extends State<RandomWords> {
 }
 //------------------------------App分割线-------------------------------
 
-/*class MyApp1 extends StatelessWidget {
+class MyApp1 extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -551,4 +554,4 @@ class FormRoute extends StatelessWidget {
       ),
     );
   }
-}*/
+}
