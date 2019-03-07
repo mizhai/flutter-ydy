@@ -1,8 +1,127 @@
 import 'package:flutter/material.dart';
+import 'package:english_words/english_words.dart';
+
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+   // final wordPair = new WordPair.random();
+    return new  MaterialApp(
+      title: "welcome to flutter",
+     /* home:  Scaffold(
+        appBar: AppBar(
+          title:  Text("welcome 123456 "),
+        ),
+        body:  Center(
+          //child:  Text("Hello12 "),
+         // child: new Text(wordPair.asCamelCase),
+          child: new RandomWords(),
+        ),
+      ),*/
+      home:new RandomWords(),
+    );
+  }
+}
+
+class RandomWords extends StatefulWidget{
+  @override
+  createState()=>new RadomWordsState();
+}
+
+class RadomWordsState extends State<RandomWords> {
+  final _suggestions = <WordPair>[];
+  final _biggerFont = const TextStyle(fontSize: 18.0);
+  final _saved = new Set<WordPair>();
+  @override
+  Widget build(BuildContext context) {
+    //final wordPair = new WordPair.random();
+    //return (new Text(wordPair.asCamelCase));
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('hahha'),
+        actions:<Widget>[
+         new IconButton(icon: new Icon(Icons.list), onPressed: _pushSaved),
+        ],
+      ),
+      body: _buildSuggestions(),
+
+    );
+  }
+
+  void _pushSaved() {
+    Navigator.of(context).push(
+      new MaterialPageRoute(
+        builder: (context) {
+          final tiles = _saved.map(
+                (pair) {
+              return new ListTile(
+                title: new Text(
+                  pair.asPascalCase,
+                  style: _biggerFont,
+                ),
+              );
+            },
+          );
+          final divided = ListTile
+              .divideTiles(
+            context: context,
+            tiles: tiles,
+          )
+              .toList();
+
+          return new Scaffold(
+            appBar: new AppBar(
+              title: new Text('Saved Suggestions'),
+            ),
+            body: new ListView(children: divided),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildSuggestions() {
+    return new ListView.builder(
+      padding: const EdgeInsets.all(16.0),
+      itemBuilder: (context, i) {
+        if (i.isOdd) return new Divider();
+
+        final index = i ~/ 2;
+        if (index >= _suggestions.length) {
+          _suggestions.addAll(generateWordPairs().take(10));
+        }
+        return _buildRow(_suggestions[index]);
+      },
+    );
+  }
+
+  Widget _buildRow(WordPair pair) {
+    final alreadySaved = _saved.contains(pair);
+    return new ListTile(
+      title: new Text(
+        pair.asCamelCase,
+        style: _biggerFont,
+      ),
+      trailing:  new Icon(
+        alreadySaved?Icons.favorite:Icons.favorite_border,
+        color: alreadySaved?Colors.red:null,
+      ),
+      onTap: (){setState(() {
+        if(alreadySaved){
+          _saved.remove(pair);
+        }else{
+          _saved.add(pair);
+        }
+      });
+      },
+    );
+  }
+}
+//------------------------------App分割线-------------------------------
+
+/*class MyApp1 extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -152,6 +271,32 @@ class _MyHomePageState extends State<MyHomePage> {
                 // debugDumpApp();
               },
             ),
+            //单选框 和复选框
+            FlatButton(
+              child: Text("5--flutter__单选开关和复选框选中状态切换"),
+              textColor: Colors.blue,
+              onPressed: () {
+                //导航到新路由
+                Navigator.push(context,
+                    new MaterialPageRoute(builder: (context) {
+                  return new SwitchAndCheckBoxTestRoute();
+                }));
+                // debugDumpApp();
+              },
+            ),
+            //输入框和表单
+            FlatButton(
+              child: Text("6--flutter__输入框和表单"),
+              textColor: Colors.blue,
+              onPressed: () {
+                //导航到新路由
+                Navigator.push(context,
+                    new MaterialPageRoute(builder: (context) {
+                  return new FormRoute();
+                }));
+                // debugDumpApp();
+              },
+            ),
           ],
         ),
       ),
@@ -212,13 +357,18 @@ class TextRoute extends StatelessWidget {
                   decoration: TextDecoration.underline,
                   decorationStyle: TextDecorationStyle.dashed),
             ),
+            Text(
+              "外部字体",
+              style: TextStyle(
+                fontFamily: "HanaleiFill",
+              ),
+            ),
             Text.rich(TextSpan(children: [
               TextSpan(text: "BAIDU : "),
               TextSpan(
                   text: "https:www.baidu.com",
                   style: TextStyle(color: Colors.blue))
             ])),
-
             Text(
               "Hello world",
               textScaleFactor: 1.5,
@@ -311,18 +461,94 @@ class ImageRoute extends StatelessWidget {
               "https://admin.luezhi.com/resource/images/login/logo-luezhi.png",
               width: 100.0,
             ),
-
-
-      Text("\uE914 \uE000 \uE90D",
-      style: TextStyle(
-          fontFamily: "MaterialIcons",
-          fontSize: 50.0,
-          color: Colors.green
-      ),
-    )
+            Text(
+              "\uE914 \uE000 \uE90D",
+              style: TextStyle(
+                  fontFamily: "MaterialIcons",
+                  fontSize: 50.0,
+                  color: Colors.green),
+            )
           ],
         ),
       ),
     );
   }
 }
+
+class SwitchAndCheckBoxTestRoute extends StatefulWidget {
+  @override
+  _SwitchAndCheckBoxTestRouteState createState() =>
+      new _SwitchAndCheckBoxTestRouteState();
+}
+
+class _SwitchAndCheckBoxTestRouteState
+    extends State<SwitchAndCheckBoxTestRoute> {
+  bool _switchSelected = true; //维护单选开关状态
+  bool _checkboxSelected = true; //维护复选框状态
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("单选开关和复选框选中状态切换"),
+      ),
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            Switch(
+              value: _switchSelected, //当前状态
+              onChanged: (value) {
+                //重新构建页面
+                setState(() {
+                  _switchSelected = value;
+                });
+              },
+            ),
+            Checkbox(
+              value: _checkboxSelected,
+              activeColor: Colors.red, //选中时的颜色
+              onChanged: (value) {
+                setState(() {
+                  _checkboxSelected = value;
+                });
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class FormRoute extends StatelessWidget {
+  TextEditingController _controller = new TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("输入框和表单"),
+      ),
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            TextField(
+              autofocus: true,
+              controller: _controller,
+              decoration: InputDecoration(
+                  labelText: "用户名",
+                  hintText: "用户名或邮箱",
+                  prefixIcon: Icon(Icons.person)),
+            ),
+            TextField(
+              decoration: InputDecoration(
+                  labelText: "密码",
+                  hintText: "您的登录密码",
+                  prefixIcon: Icon(Icons.lock)),
+              obscureText: true,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}*/
